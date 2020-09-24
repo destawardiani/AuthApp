@@ -6,30 +6,51 @@ import Card from './Card'
 import CardSection from './CardSection'
 import Button from './Button'
 import Input from './Input';
+import Spinner from './Spinner';
 
 class LoginForm extends Component  {
     state = {
         email: '',
         password: '',
-        error: ','
+        error: ',',
+        loading: false,
+    }
+
+    onLoginSuccess(){
+        this.setState({
+            email: '',
+            password: '',
+            error: ',',
+            loading: false, 
+        })
     }
     onButtonPress() {
         console.log('Processing Login...');
         const { email, password } = this.state
 
-        this.setState({ error: '' })
+        this.setState({ error: '', loading: true })
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then()
+            .then(() => this.onLoginSuccess)
             .catch(error => {
                 console.log(error.message);
                 firebase.auth().createUserWithEmailAndPassword(email, password)
-                    .then()
+                    .then(() => this.onLoginSuccess)
                     .catch(error2 => {
                         console.log(error2.message);
-                        this.setState({ error: 'Authentication Failed' })
+                        this.setState({ error: 'Authentication Failed', loading: false })
                     })
                 })
+    }
+    renderButton() {
+        if (this.state.loading) {
+            return <Spinner />
+        }
+        return(
+            <Button onPress={ () => this.onButtonPress() }>
+                Login
+            </Button>
+        )
     }
     render() {
         return (
@@ -52,9 +73,7 @@ class LoginForm extends Component  {
                     { this.state.error }
                 </Text>
                 <CardSection>
-                    <Button onPress={ () => this.onButtonPress() }>
-                        Login
-                    </Button>
+                    { this.renderButton() }
                 </CardSection>
             </Card>
         )
