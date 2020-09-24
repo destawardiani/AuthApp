@@ -32,6 +32,8 @@ class Input extends Component {
             label,
             placeholder,
             secureTextEnrty,
+            value,
+            onChangeText,
         } = this.props
     
         return (
@@ -43,7 +45,9 @@ class Input extends Component {
                 style={ style.input } 
                 placeholder={ placeholder }
                 secureTextEntry={ secureTextEnrty }
-                autoCorrect={ false } />
+                autoCorrect={ false }
+                value={ value }
+                onChangeText={ onChangeText } />
         </View>
         );
     }
