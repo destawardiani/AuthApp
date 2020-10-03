@@ -31,11 +31,11 @@ class LoginForm extends Component  {
         this.setState({ error: '', loading: true })
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(() => this.onLoginSuccess)
+            .then(() => this.onLoginSuccess())
             .catch(error => {
                 console.log(error.message);
                 firebase.auth().createUserWithEmailAndPassword(email, password)
-                    .then(() => this.onLoginSuccess)
+                    .then(() => this.onLoginSuccess())
                     .catch(error2 => {
                         console.log(error2.message);
                         this.setState({ error: 'Authentication Failed', loading: false })
